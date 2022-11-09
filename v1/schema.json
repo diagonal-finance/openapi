@@ -1226,12 +1226,6 @@
 						"minimum": 1,
 						"example": 1,
 						"description": "Number of interval units that the subscription should be active for."
-					},
-					"trial_days": {
-						"type": "integer",
-						"minimum": 1,
-						"example": 1,
-						"description": "Number of trial days the subscription is eligible for."
 					}
 				},
 				"required": ["interval", "interval_count"]
