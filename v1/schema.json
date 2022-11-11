@@ -824,6 +824,11 @@
 				],
 				"properties": {}
 			},
+			"ChargeReason": {
+				"type": "string",
+				"enum": ["subscription_creation", "subscription_due", "subscription_update", "subscription_cancel"],
+				"properties": {}
+			},
 			"Token": { "type": "string", "enum": ["dai", "usdc"], "properties": {} },
 			"Chain": { "type": "string", "enum": ["ethereum", "goerli"], "properties": {} },
 			"ChargeFailureReason": {
@@ -833,10 +838,9 @@
 					"insufficient_balance",
 					"address_blacklisted",
 					"contract_paused",
-					"invalid_owner_address",
 					"invalid_permit_signature",
+					"invalid_permit_nonce",
 					"expired_permit",
-					"invalid_nonce",
 					"internal_error"
 				],
 				"properties": {}
@@ -914,6 +918,11 @@
 						"description": "The time when the charge is going to be attempted again. Measured in seconds since the Unix epoch.",
 						"format": "uint32"
 					},
+					"reason": {
+						"example": "subscription_due",
+						"description": "The reason for creating the charge.",
+						"$ref": "#/components/schemas/ChargeReason"
+					},
 					"reference": {
 						"type": "string",
 						"maxLength": 200,
@@ -968,6 +977,7 @@
 					"id",
 					"object",
 					"status",
+					"reason",
 					"subscription_id",
 					"source_address",
 					"amount",
@@ -1547,27 +1557,6 @@
 				},
 				"required": ["amount", "at"]
 			},
-			"SubscriptionPaymentInformationDto": {
-				"type": "object",
-				"properties": {
-					"address": {
-						"type": "string",
-						"example": "0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B",
-						"description": "The address of the user that is paying for the subscription."
-					},
-					"chain": {
-						"example": "ethereum",
-						"description": "The chain that the subscription is being paid on.",
-						"$ref": "#/components/schemas/Chain"
-					},
-					"token": {
-						"example": "usdc",
-						"description": "The token that the subscription is being paid in. All amounts are in this token.",
-						"$ref": "#/components/schemas/Token"
-					}
-				},
-				"required": ["address", "token", "chain"]
-			},
 			"SubscriptionBillingDto": {
 				"type": "object",
 				"properties": {
@@ -1589,6 +1578,27 @@
 					}
 				},
 				"required": ["amount", "interval", "interval_count"]
+			},
+			"SubscriptionPaymentInformationDto": {
+				"type": "object",
+				"properties": {
+					"address": {
+						"type": "string",
+						"example": "0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B",
+						"description": "The address of the user that is paying for the subscription."
+					},
+					"chain": {
+						"example": "ethereum",
+						"description": "The chain that the subscription is being paid on.",
+						"$ref": "#/components/schemas/Chain"
+					},
+					"token": {
+						"example": "usdc",
+						"description": "The token that the subscription is being paid in. All amounts are in this token.",
+						"$ref": "#/components/schemas/Token"
+					}
+				},
+				"required": ["address", "token", "chain"]
 			},
 			"SubscriptionDto": {
 				"type": "object",
@@ -1614,7 +1624,10 @@
 						"description": "The balance of the subscription. This is the amount the user is owed, represented by positive number, or the amount the user owes, represented by a negative number.",
 						"allOf": [{ "$ref": "#/components/schemas/SubscriptionBalanceDto" }]
 					},
-					"billing": { "$ref": "#/components/schemas/SubscriptionBillingDto" },
+					"billing": {
+						"description": "Billing information for the subscription.",
+						"allOf": [{ "$ref": "#/components/schemas/SubscriptionBillingDto" }]
+					},
 					"canceled_at": {
 						"type": "integer",
 						"example": null,
@@ -1670,7 +1683,7 @@
 						"format": "uint32"
 					}
 				},
-				"required": ["id", "object", "status", "created_at", "updated_at", "balance", "payment_information", "billing"]
+				"required": ["id", "object", "status", "created_at", "updated_at", "balance", "billing", "payment_information"]
 			},
 			"UpdateChargeBehaviour": { "type": "string", "enum": ["immediate", "next_period"], "properties": {} },
 			"UpdateSubscriptionDto": {
