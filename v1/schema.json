@@ -1050,7 +1050,7 @@
 					"subscription.canceled",
 					"charge.created",
 					"charge.confirmed",
-					"charge.finalised",
+					"charge.finalized",
 					"charge.attempt_failed",
 					"charge.failed",
 					"signature.charge.request"
@@ -1796,7 +1796,7 @@
 							"subscription.canceled",
 							"charge.created",
 							"charge.confirmed",
-							"charge.finalised",
+							"charge.finalized",
 							"charge.attempt_failed",
 							"charge.failed"
 						]
