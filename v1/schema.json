@@ -1252,15 +1252,13 @@
 						"type": "array",
 						"items": { "$ref": "#/components/schemas/Chain" },
 						"description": "Chain names where the subscription can be payed in.",
-						"example": ["ethereum"],
-						"enum": ["ethereum", "goerli"]
+						"example": ["ethereum"]
 					},
 					"tokens": {
 						"type": "array",
 						"items": { "$ref": "#/components/schemas/Token" },
 						"description": "Token names available to pay for the subscription.",
-						"example": ["dai"],
-						"enum": ["dai", "usdc"]
+						"example": ["dai"]
 					}
 				}
 			},
@@ -1351,14 +1349,12 @@
 					"chains": {
 						"type": "array",
 						"items": { "$ref": "#/components/schemas/Chain" },
-						"description": "The valid chains that the user can use to pay for the subscription.",
-						"enum": ["ethereum", "goerli"]
+						"description": "The valid chains that the user can use to pay for the subscription."
 					},
 					"tokens": {
 						"type": "array",
 						"items": { "$ref": "#/components/schemas/Token" },
-						"description": "The valid tokens that the user can use to pay for the subscription.",
-						"enum": ["dai", "usdc"]
+						"description": "The valid tokens that the user can use to pay for the subscription."
 					}
 				}
 			},
@@ -1934,6 +1930,5 @@
 			"ErrorType": { "type": "string", "enum": ["internal", "request"], "properties": {} }
 		}
 	},
-	"security": [{ "X-API-Key": ["X-API-Key"] }],
-	"x-readme": { "samples-languages": ["curl", "node", "go", "python", "java"] }
+	"security": [{ "X-API-Key": ["X-API-Key"] }]
 }
