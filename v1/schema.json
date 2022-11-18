@@ -830,7 +830,7 @@
 				"properties": {}
 			},
 			"Token": { "type": "string", "enum": ["dai", "usdc"], "properties": {} },
-			"Chain": { "type": "string", "enum": ["ethereum", "goerli"], "properties": {} },
+			"Chain": { "type": "string", "enum": ["ethereum", "goerli", "polygon"], "properties": {} },
 			"ChargeFailureReason": {
 				"type": "string",
 				"enum": [
@@ -1041,7 +1041,7 @@
 				},
 				"required": ["signature"]
 			},
-			"ApplicationEventTypes": {
+			"EventType": {
 				"type": "string",
 				"enum": [
 					"subscription.created",
@@ -1064,7 +1064,7 @@
 						"type": "array",
 						"example": ["charge.confirmed", "charge.failed"],
 						"description": "Events that the webhook endpoint will be triggered for.",
-						"items": { "$ref": "#/components/schemas/ApplicationEventTypes" }
+						"items": { "$ref": "#/components/schemas/EventType" }
 					},
 					"metadata": {
 						"type": "object",
@@ -1113,7 +1113,7 @@
 						"type": "array",
 						"example": ["charge.confirmed", "charge.failed"],
 						"description": "Events that the webhook endpoint will be triggered for.",
-						"items": { "$ref": "#/components/schemas/ApplicationEventTypes" }
+						"items": { "$ref": "#/components/schemas/EventType" }
 					},
 					"metadata": {
 						"type": "object",
@@ -1167,7 +1167,7 @@
 						"type": "array",
 						"example": ["charge.confirmed", "charge.failed"],
 						"description": "Events that the webhook endpoint will be triggered for.",
-						"items": { "$ref": "#/components/schemas/ApplicationEventTypes" }
+						"items": { "$ref": "#/components/schemas/EventType" }
 					},
 					"metadata": {
 						"type": "object",
@@ -1198,7 +1198,7 @@
 						"type": "array",
 						"example": ["charge.confirmed", "charge.failed"],
 						"description": "Events that the webhook endpoint will be triggered for.",
-						"items": { "$ref": "#/components/schemas/ApplicationEventTypes" }
+						"items": { "$ref": "#/components/schemas/EventType" }
 					},
 					"metadata": {
 						"type": "object",
@@ -1236,6 +1236,12 @@
 						"minimum": 1,
 						"example": 1,
 						"description": "Number of interval units that the subscription should be active for."
+					},
+					"trial_days": {
+						"type": "integer",
+						"minimum": 1,
+						"example": 1,
+						"description": "Number of trial days the subscription is eligible for."
 					}
 				},
 				"required": ["interval", "interval_count"]
@@ -1763,13 +1769,13 @@
 					"data": {
 						"type": "object",
 						"example": {
-							"id": "sub_123456",
+							"id": "sub_diDe1MOUkiQTFGdu",
 							"object": "subscription",
 							"status": "active",
 							"balance": { "amount": "0.0", "updated_at": 1666634747 },
 							"billing": { "amount": "100.0", "interval": "month", "interval_count": 1 },
 							"created_at": 1666634747,
-							"customer_id": "customer_123456",
+							"customer_id": "customer_jwQp70apggR4PRHS",
 							"last_payment": { "amount": "100.0", "at": 1666634747 },
 							"next_payment": { "amount": "100.0", "at": 1666634747 },
 							"payment_information": {
@@ -1782,26 +1788,15 @@
 						"description": "The event data."
 					},
 					"type": {
-						"type": "string",
 						"example": "subscription.active",
 						"description": "The event type.",
-						"enum": [
-							"subscription.created",
-							"subscription.active",
-							"subscription.updated",
-							"subscription.canceled",
-							"charge.created",
-							"charge.confirmed",
-							"charge.finalized",
-							"charge.attempt_failed",
-							"charge.failed"
-						]
+						"$ref": "#/components/schemas/EventType"
 					}
 				},
 				"required": ["id", "object", "created_at", "type", "data"]
 			},
 			"SignatureType": { "type": "string", "enum": ["charge"], "properties": {} },
-			"ChainId": { "type": "integer", "enum": [1, 5], "properties": {} },
+			"ChainId": { "type": "integer", "enum": [1, 5, 137], "properties": {} },
 			"ChargeSignaturePayloadDto": {
 				"type": "object",
 				"properties": {
